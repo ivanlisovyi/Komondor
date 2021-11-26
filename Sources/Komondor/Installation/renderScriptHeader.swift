@@ -6,15 +6,15 @@ import Foundation
 /// If *this* changes then the template should be updated
 ///
 public func renderScriptHeader(_: String) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    let installDate = dateFormatter.string(from: Date())
-
-    return
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateStyle = .medium
+  let installDate = dateFormatter.string(from: Date())
+  
+  return
         """
         #!/bin/sh
         # Komondor v\(KomondorVersion)
         # Installed: \(installDate)
-
+        
         """
 }

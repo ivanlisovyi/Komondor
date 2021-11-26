@@ -3,26 +3,12 @@
 ///
 /// If *this* changes then the template should be updated
 ///
-public func renderScript(_ hookName: String, _ swiftPackagePrefix: String?) -> String {
-    let changeDir = swiftPackagePrefix.map { "cd \($0)\n" }
-        ?? ""
-    return
+public func renderScript(_ hookName: String, _ executor: String?) -> String {
         """
         hookName=`basename "$0"`
         gitParams="$*"
-        \(changeDir)
-        # use prebuilt binary if one exists, preferring release
-        builds=( '.build/release/komondor' '.build/debug/komondor' )
-        for build in ${builds[@]} ; do
-          if [[ -e $build ]] ; then
-            komondor=$build
-            break
-          fi
-        done
-        # fall back to using 'swift run' if no prebuilt binary found
-        komondor=${komondor:-'swift run komondor'}
-
+        
         # run hook
-        $komondor run \(hookName) $gitParams
+        \(executor ?? "") komondor run \(hookName) $gitParams
         """
 }
