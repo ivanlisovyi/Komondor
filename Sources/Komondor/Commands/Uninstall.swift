@@ -1,13 +1,28 @@
 import Foundation
 import ShellOut
+import ArgumentParser
 
-public func uninstall(logger: Logger) throws {
+struct Uninstall: ParsableCommand {
+  static var configuration: CommandConfiguration = .init(
+    commandName: "uninstall",
+    abstract: "Removes git-hooks created by Komondor"
+  )
+  
+  @Flag(help: "Produce additional debug logs")
+  var verbose: Bool = false
+  
+  @Flag(help: "Silence all logs")
+  var silent: Bool = false
+  
+  func run() throws {
+    let logger = Logger(isVerbose: verbose, isSilent: silent)
+    
     // Validate we're in a git repo
     do {
         try shellOut(to: "git remote")
     } catch {
         logger.logError("[Komondor] Can only uninstall git-hooks into a git repo.")
-        exit(1)
+        return
     }
 
     let fileManager = FileManager.default
@@ -23,7 +38,7 @@ public func uninstall(logger: Logger) throws {
     // If no hooks dir just exit
     guard fileManager.fileExists(atPath: hooksRoot.path) else {
         print("[Komondor] hooks directory does not exist, no hooks to uninstall")
-        exit(0)
+      return
     }
 
     try hookList.forEach { hookName in
@@ -49,4 +64,5 @@ public func uninstall(logger: Logger) throws {
     }
 
     print("[Komondor] git-hooks uninstalled")
+  }
 }
