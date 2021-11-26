@@ -1,5 +1,4 @@
 import Foundation
-import PackageConfig
 import ShellOut
 
 // To emulate running the command as the script would do:

@@ -9,39 +9,13 @@ let package = Package(
     ],
     dependencies: [
         // User deps
-        .package(url: "https://github.com/shibapm/PackageConfig.git", .upToNextMajor(from: "1.0.1")),
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.1.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
-        // Dev deps
-        .package(url: "https://github.com/nicklockwood/SwiftFormat.git", from: "0.35.8"), // dev
-        .package(url: "https://github.com/Realm/SwiftLint.git", from: "0.28.1"), // dev
-        .package(url: "https://github.com/f-meloni/Rocket", from: "1.2.1"), // dev
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6")
     ],
     targets: [
         .target(
             name: "Komondor",
-            dependencies: ["PackageConfig", "ShellOut", "Yams"]
+            dependencies: ["ShellOut", "Yams"]
         ),
     ]
 )
-
-#if canImport(PackageConfig)
-    import PackageConfig
-
-    let config = PackageConfiguration([
-        "komondor": [
-            "pre-push": "swift build",
-            "pre-commit": [
-                "swift build",
-                "swift run swiftformat .",
-                "swift run swiftlint autocorrect --path Sources/",
-                "git add .",
-            ],
-        ],
-        "rocket": [
-            "after": [
-                "push",
-            ],
-        ],
-    ]).write()
-#endif

@@ -3,11 +3,9 @@
 ///
 /// If *this* changes then the template should be updated
 ///
-public func renderScript(_ hookName: String, _ swiftPackagePrefix: String?, _ usingConfigFile: Bool = false) -> String {
+public func renderScript(_ hookName: String, _ swiftPackagePrefix: String?) -> String {
     let changeDir = swiftPackagePrefix.map { "cd \($0)\n" }
         ?? ""
-  
-    let useConfigFile = usingConfigFile ? "--use-config-file" : ""
     return
         """
         hookName=`basename "$0"`
@@ -25,6 +23,6 @@ public func renderScript(_ hookName: String, _ swiftPackagePrefix: String?, _ us
         komondor=${komondor:-'swift run komondor'}
 
         # run hook
-        $komondor run \(hookName) $gitParams \(useConfigFile)
+        $komondor run \(hookName) $gitParams
         """
 }
