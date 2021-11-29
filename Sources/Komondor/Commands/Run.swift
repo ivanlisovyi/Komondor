@@ -17,8 +17,8 @@ struct Run: ParsableCommand {
   @Argument(help: "Git hook to be executed")
   var hook: String
   
-  @Argument(help: "Git params")
-  var params: [String]
+  @Argument(parsing: .unconditionalRemaining, help: "Git params")
+  var params: [String] = []
   
   func run() throws {
     let logger = Logger(isVerbose: verbose, isSilent: silent)

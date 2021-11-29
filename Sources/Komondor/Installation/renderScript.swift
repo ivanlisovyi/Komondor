@@ -21,6 +21,6 @@ public func renderScript(_ hookName: String, _ searchPaths: [String] = []) -> St
         done
         
         # run hook
-        komondor run \(hookName) $gitParams
+        $komondor run \(hookName) $gitParams
         """
 }
