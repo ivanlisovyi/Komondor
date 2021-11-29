@@ -45,8 +45,8 @@ struct Install: ParsableCommand {
   @Flag(help: "Silence all logs")
   var silent: Bool = false
   
-  @Option(name: .shortAndLong, help: "An executor resposible for executing komondor commands")
-  var executor: String?
+  @Option(name: [.customLong("search-paths"), .customShort(.init("p"))], help: "A list of additional search path for komondor executable")
+  var searchPaths: [String] = []
   
   func run() throws {
     let logger = Logger(isVerbose: verbose, isSilent: silent)
@@ -94,7 +94,7 @@ struct Install: ParsableCommand {
       // Separate header from script so we can
       // update if the script updates
       let header = renderScriptHeader(hookName)
-      let script = renderScript(hookName, executor)
+      let script = renderScript(hookName, searchPaths)
       let hook = header + script
       
       // This is the same permissions that husky uses
